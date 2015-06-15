@@ -41,6 +41,13 @@ target_link_libraries(${PROJECT_NAME}
 add_library(${PROJECT_NAME}_plugins src/manifest.cpp src/raw_publisher.cpp)
 target_link_libraries(${PROJECT_NAME}_plugins ${PROJECT_NAME})
 
+# Build tests
+if(CATKIN_ENABLE_TESTING)
+  find_package(cv_bridge REQUIRED)
+  catkin_add_gtest(test_race tests/test_race.cpp)
+  target_link_libraries(test_race image_transport ${cv_bridge_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+endif()
+
 install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_plugins
         DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         COMPONENT main
